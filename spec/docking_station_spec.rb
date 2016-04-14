@@ -1,7 +1,32 @@
-require "docking_station"
-require "bike"
+require "docking_station"  
+require "bike"				
 
 describe DockingStation do
+	
+	xdescribe "method full?" do
+	
+		it "returns false if less than 20 bikes are docked" do
+			expect(subject.full?).to eq false	
+		end	
+
+		it "returns true if more than 20 bikes are docked" do
+			20.times do 
+				subject.dock(Bike.new)
+			end 
+			expect(subject.full?).to eq true
+		end
+	end
+
+	xdescribe "method empty?" do
+		it "returns true when dock is empty" do
+			expect(subject.empty?).to eq true
+		end
+
+		it "returns false when dock is not empty" do
+			subject.dock(Bike.new)
+			expect(subject.empty?).to eq false
+		end
+	end	
 
 	it "working bike" do
 		new_bike = Bike.new
@@ -9,44 +34,47 @@ describe DockingStation do
 	end
 
 
-	it "returns docked bikes" do
-		bike = Bike.new
-		subject.dock(bike)
-		bike_array = []
-		bike_array << bike
-		expect(subject.bike_array).to eq bike_array
+	it "returns docked bikes" do  
+		bike = Bike.new 	 
+		subject.dock(bike)	 
+		expect(subject.bike_array.length).to eq 1    
 	end
 
-	it "docks a bike" do
-		bike = Bike.new
-		expect(subject.dock(bike)).to eq bike
+	it "docks a bike" do   
+		bike = Bike.new  
+		expect(subject.dock(bike)).to eq bike 
+		subject.dock(bike);
+		expect(subject.bike_array[0]).to eq bike   
 	end
 
-	describe '#release_bike' do
-
-		it "responds to release_bike" do
-		expect(subject).to respond_to(:release_bike)
+	it 'raises an error when dock is full' do
+			20.times do
+				subject.dock Bike.new
+			end 
+			expect {subject.dock Bike.new}.to raise_error 'Dock is full'  
 		end
 
-		it 'releases a bikes' do
-			bike = Bike.new
-			subject.dock(bike)
-			expect(subject.release_bike).to eq bike
+	describe '#release_bike' do  
+
+		it "responds to release_bike" do   
+			expect(subject).to respond_to(:release_bike)
 		end
+
+		it 'releases a bikes' do  
+			bike = Bike.new      
+			subject.dock(bike)   
+			subject.release_bike()
+			expect(subject.bike_array.length).to eq 0   
+		end	
 
 		it 'raises an error when no bikes are available' do
-			expect { subject.release_bike}.to raise_error 'No bikes available'
+			expect { subject.release_bike}.to raise_error 'No bikes available'  #Here you are expecting your method release bike to raise an error if no bikes are parked, since we have not docked anything, we don't have a bike, and you get your error, the reason because you are using curly braces instead of parenthesis is to recover the software from the error, or tell it beforehand "hey do not freak out, an error may come but is expected"
 		end
+
+
 
 	end
 
-	describe '#dock' do
-		it 'raises an error when dock is full' do
-			20.times {subject.dock Bike.new}
-			expect {subject.dock Bike.new}.to raise_error 'Dock is full'
-		end
-	end
-
-
+ 
 
 end
