@@ -2,7 +2,18 @@ require "docking_station"
 require "bike"				
 
 describe DockingStation do
-	#DEFAULT_CAPACITY = 20
+	 
+	describe "initialize method" do 
+
+		it "sets capacity to 20 if no parameter is given" do 
+			expect(subject.capacity).to eq 20
+		end
+
+		it "sets capacity when a parameter's given" do 
+			subject = DockingStation.new(10)
+			expect(subject.capacity).to eq 10
+		end
+	end		
 	
 	describe "method full?" do
 		it "returns false if less than 20 bikes are docked" do
