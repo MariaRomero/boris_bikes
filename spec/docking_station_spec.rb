@@ -2,22 +2,22 @@ require "docking_station"
 require "bike"				
 
 describe DockingStation do
+	#DEFAULT_CAPACITY = 20
 	
-	xdescribe "method full?" do
-	
+	describe "method full?" do
 		it "returns false if less than 20 bikes are docked" do
 			expect(subject.full?).to eq false	
 		end	
 
 		it "returns true if more than 20 bikes are docked" do
-			20.times do 
+				DockingStation::DEFAULT_CAPACITY.times do 
 				subject.dock(Bike.new)
 			end 
 			expect(subject.full?).to eq true
 		end
 	end
 
-	xdescribe "method empty?" do
+	describe "method empty?" do
 		it "returns true when dock is empty" do
 			expect(subject.empty?).to eq true
 		end
@@ -48,9 +48,9 @@ describe DockingStation do
 	end
 
 	it 'raises an error when dock is full' do
-			20.times do
-				subject.dock Bike.new
-			end 
+		DockingStation::DEFAULT_CAPACITY.times do
+		subject.dock Bike.new
+		end 
 			expect {subject.dock Bike.new}.to raise_error 'Dock is full'  
 		end
 
