@@ -9,7 +9,7 @@ describe DockingStation do
 			expect(subject.capacity).to eq 20
 		end
 
-		it "sets capacity when a parameter's given" do 
+		it "sets capacity when a parameter's given" do
 			subject = DockingStation.new(10)
 			expect(subject.capacity).to eq 10
 		end
@@ -65,7 +65,7 @@ describe DockingStation do
 			expect {subject.dock Bike.new}.to raise_error 'Dock is full'  
 		end
 
-	describe '#release_bike' do  
+	describe 'method release_bike' do  
 
 		it "responds to release_bike" do   
 			expect(subject).to respond_to(:release_bike)
@@ -78,14 +78,21 @@ describe DockingStation do
 			expect(subject.bike_array.length).to eq 0   
 		end	
 
-		it 'raises an error when no bikes are available' do
-			expect { subject.release_bike}.to raise_error 'No bikes available'  #Here you are expecting your method release bike to raise an error if no bikes are parked, since we have not docked anything, we don't have a bike, and you get your error, the reason because you are using curly braces instead of parenthesis is to recover the software from the error, or tell it beforehand "hey do not freak out, an error may come but is expected"
+		it "doesn't release broken bikes" do
+			bike = Bike.new
+			broken_bike = Bike.new(false)
+			subject.dock(bike) 
+			subject.dock(broken_bike)
+			expect(subject.release_bike).to eq bike
 		end
 
+		it "doesn't release bikes if all broken" do
+			broken_bike = Bike.new(false)
+			subject.dock(broken_bike)
+			expect{subject.release_bike}.to raise_error 'Sorry This bike is not working'
+		end	
 
-
+		it 'raises an error when no bikes are available' do
+			expect { subject.release_bike}.to raise_error 'No bikes available' 		end
 	end
-
- 
-
 end

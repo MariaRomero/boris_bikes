@@ -14,12 +14,21 @@ class DockingStation
 
 	def release_bike
     fail 'No bikes available' if @bike_array.empty?
-    @bike_array.pop
-	end
+    releasing_bike = @bike_array.last
+    if releasing_bike.working? == false
+      fail "Sorry This bike is not working"
+    else  
+      @bike_array.pop
+	  end 
+  end
 
-	def dock(bike)
-		fail 'Dock is full' if full?
-    @bike_array << bike
+  def dock(bike)
+    fail 'Dock is full' if full?
+    if bike.working?
+      @bike_array << bike
+    else
+      @bike_array.unshift(bike)
+    end
     bike
   end
 
