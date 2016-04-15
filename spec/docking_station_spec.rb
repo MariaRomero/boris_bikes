@@ -2,6 +2,12 @@ require "docking_station"
 require "bike"				
 
 describe DockingStation do
+	let(:bike) {double (:bike, :working? => true)}
+
+	it "working bike" do
+		#allow(bike).to receive(:working?).and_return(true) THIS IS THE SAME AS LINE let(:bike) {double (:bike, :working? => true)}
+		(bike.working?).should be true
+	end
 	 
 	describe "initialize method" do 
 
@@ -35,14 +41,12 @@ describe DockingStation do
 		end
 
 		it "returns false when dock is not empty" do
-			subject.dock double (:bike)
+			subject.dock(:bike)
 			expect(subject.empty?).to eq false
 		end
 	end	
 
-	it "working bike" do
-		(:bike.working?).should be true
-	end
+	
 
 	it "returns docked bikes" do  	 
 		subject.dock(:bike)	 
