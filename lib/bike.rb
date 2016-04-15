@@ -20,11 +20,6 @@ class Bike
 
 end
 
-# myBici = Bike.new
-# myBici.working?  #false
-
-# tuBici = Bike.new(true)
-# myBici.working?  #true
 
 
 
