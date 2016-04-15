@@ -2,7 +2,7 @@ require "docking_station"
 require "bike"				
 
 describe DockingStation do
-	let(:bike) {double (:bike, :working? => true)}
+	let(:bike) { double :bike,:working? => true} 
 
 	it "working bike" do
 		#allow(bike).to receive(:working?).and_return(true) THIS IS THE SAME AS LINE let(:bike) {double (:bike, :working? => true)}
