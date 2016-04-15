@@ -13,13 +13,13 @@ class DockingStation
    end
 
   def release_bike
-    fail 'No bikes available' if self.empty?
-    bike_to_release = @bike_array.pop
-    if bike_to_release.working? == false
-      fail 'This bike is broken, please try again'
-    else
-      return bike_to_release
-    end
+    fail 'No bikes available' if @bike_array.empty?
+    releasing_bike = @bike_array.last
+      if releasing_bike.working? == false
+        fail "Sorry This bike is not working"
+      else  
+        @bike_array.pop
+      end 
   end
 
    def report(bike)
@@ -27,9 +27,13 @@ class DockingStation
    end
 
   def dock(bike)
-    fail 'Docking station full' if self.full?
-     @bike_array <<  bike
-  end
+    fail 'Dock is full' if full?
+      if bike.working?
+        @bike_array << bike
+      else
+        @bike_array.unshift(bike)
+      end
+  end    
 
 #private
 

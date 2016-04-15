@@ -1,13 +1,33 @@
 require "docking_station"  
 require "bike"				
-
+#
 describe DockingStation do
 	let(:bike) { double :bike,:working? => true} 
+	let(:broken_bike) { double :broken_bike,:working? => false}
 
 	it "working bike" do
 		#allow(bike).to receive(:working?).and_return(true) THIS IS THE SAME AS LINE let(:bike) {double (:bike, :working? => true)}
 		(bike.working?).should be true
 	end
+
+	it "returns docked bikes" do  	 
+		subject.dock(bike)	 
+		expect(subject.bike_array.length).to eq 1    
+	end
+
+	it "docks a bike" do   
+		#expect(subject.dock(:bike)).to eq bike WHY THIS HERE???
+		subject.dock(bike)
+		expect(subject.bike_array[0]).to eq bike   
+	end
+
+	it 'raises an error when dock is full' do
+		DockingStation::DEFAULT_CAPACITY.times do
+		subject.dock bike
+		end 
+
+			expect {subject.dock double(bike) }.to raise_error 'Dock is full'  
+		end
 	 
 	describe "initialize method" do 
 
@@ -28,7 +48,7 @@ describe DockingStation do
 
 		it "returns true if more than 20 bikes are docked" do
 				DockingStation::DEFAULT_CAPACITY.times do 
-				subject.dock(:bike)
+				subject.dock(bike)
 			end 
 			expect(subject.full?).to eq true
 		end
@@ -41,31 +61,10 @@ describe DockingStation do
 		end
 
 		it "returns false when dock is not empty" do
-			subject.dock(:bike)
+			subject.dock(bike)
 			expect(subject.empty?).to eq false
 		end
 	end	
-
-	
-
-	it "returns docked bikes" do  	 
-		subject.dock(:bike)	 
-		expect(subject.bike_array.length).to eq 1    
-	end
-
-	it "docks a bike" do   
-		#expect(subject.dock(:bike)).to eq bike 
-		subject.dock(:bike)
-		expect(subject.bike_array[0]).to eq :bike   #is it meant to be a symbol?
-	end
-
-	it 'raises an error when dock is full' do
-		DockingStation::DEFAULT_CAPACITY.times do
-		subject.dock double :bike
-		end 
-
-			expect {subject.dock double(:bike) }.to raise_error 'Dock is full'  
-		end
 
 	describe 'method release_bike' do  
 
@@ -73,20 +72,20 @@ describe DockingStation do
 			expect(subject).to respond_to(:release_bike)
 		end
 
-		it 'releases a bikes' do    
-			subject.dock(:bike)   
+		it 'releases a bike' do    
+			subject.dock(bike)   
 			subject.release_bike()
 			expect(subject.bike_array.length).to eq 0   
 		end	
 
 		it "doesn't release broken bikes" do
-			subject.dock(:bike) 
-			subject.dock(:broken_bike)
+			subject.dock(bike) 
+			subject.dock(broken_bike)
 			expect(subject.release_bike).to eq bike
 		end
 
 		it "doesn't release bikes if all broken" do
-			subject.dock(:broken_bike)
+			subject.dock(broken_bike)
 			expect{subject.release_bike}.to raise_error 'Sorry This bike is not working'
 		end	
 
