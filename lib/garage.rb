@@ -1,6 +1,6 @@
+require_relative 'bikecontainer'
 
 class Garage
-	
 	
 	attr_reader :working_bikes
 	

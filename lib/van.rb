@@ -1,4 +1,6 @@
 
+require_relative 'bikecontainer'
+
 class Van
 	
 	attr_reader :broken_bikes

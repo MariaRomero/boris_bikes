@@ -1,7 +1,5 @@
 require "garage"
 
-
-
 	describe Garage do
 		let(:bike) {double :bike, :working? => true }
 		let(:broken_bike) { double :broken_bike, :working => false, :working? => false, :fix_bike => true}
