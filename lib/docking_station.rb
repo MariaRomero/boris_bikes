@@ -1,6 +1,7 @@
-require_relative 'bike'
+#require_relative 'bike'
 
 class DockingStation
+
   DEFAULT_CAPACITY = 20
 
   attr_reader :bike_array
@@ -10,6 +11,7 @@ class DockingStation
    def initialize(capacity = DEFAULT_CAPACITY)
     @capacity = capacity
     @bike_array = []
+
    end
 
   def release_bike
@@ -33,7 +35,19 @@ class DockingStation
       else
         @bike_array.unshift(bike)
       end
-  end    
+  end  
+
+  def return_broken_bikes
+    rtn_broken_bikes = []
+    counter = 0 
+    while counter < @bike_array.length do
+        if @bike_array[counter].working? == false
+          rtn_broken_bikes << @bike_array[counter]
+        end  
+      counter +=1
+    end 
+    rtn_broken_bikes
+  end  
 
 #private
 

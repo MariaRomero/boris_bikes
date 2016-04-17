@@ -1,14 +1,8 @@
-require "docking_station"  
-require "bike"				
-#
+require "docking_station"  			
+
 describe DockingStation do
 	let(:bike) { double :bike,:working? => true} 
 	let(:broken_bike) { double :broken_bike,:working? => false}
-
-	it "working bike" do
-		#allow(bike).to receive(:working?).and_return(true) THIS IS THE SAME AS LINE let(:bike) {double (:bike, :working? => true)}
-		(bike.working?).should be true
-	end
 
 	it "returns docked bikes" do  	 
 		subject.dock(bike)	 
@@ -16,17 +10,16 @@ describe DockingStation do
 	end
 
 	it "docks a bike" do   
-		#expect(subject.dock(:bike)).to eq bike WHY THIS HERE???
 		subject.dock(bike)
 		expect(subject.bike_array[0]).to eq bike   
 	end
 
 	it 'raises an error when dock is full' do
 		DockingStation::DEFAULT_CAPACITY.times do
-		subject.dock bike
+			subject.dock bike
 		end 
 
-			expect {subject.dock double(bike) }.to raise_error 'Dock is full'  
+		expect {subject.dock double(bike) }.to raise_error 'Dock is full'  
 		end
 	 
 	describe "initialize method" do 
@@ -82,6 +75,13 @@ describe DockingStation do
 			subject.dock(bike) 
 			subject.dock(broken_bike)
 			expect(subject.release_bike).to eq bike
+		end
+
+		it "releases broken bikes to the van" do
+			subject.dock(broken_bike)
+			subject.dock(broken_bike)
+			subject.dock(bike)
+			expect(subject.return_broken_bikes.length).to eq 2 
 		end
 
 		it "doesn't release bikes if all broken" do
